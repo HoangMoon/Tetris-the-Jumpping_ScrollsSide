@@ -74,7 +74,7 @@ class player(object):
             self.runCount += 1
             self.hitbox = (self.x+ 4, self.y, self.width-24, self.height-13)
 
-        pygame.draw.rect(win, (255,0,0),self.hitbox, 2)
+        # pygame.draw.rect(win, (255,0,0),self.hitbox, 2)
 
 class saw(object):
     rotate = [pygame.image.load(os.path.join('images', 'SAW0.png')), pygame.image.load(os.path.join('images', 'SAW1.png')), pygame.image.load(os.path.join('images', 'SAW2.png')), pygame.image.load(os.path.join('images', 'SAW3.png'))]
@@ -94,7 +94,7 @@ class saw(object):
             self.rotateCount = 0
         win.blit(pygame.transform.scale(self.rotate[self.rotateCount//2], (64,64)), (self.x,self.y)) #co hình ảnh về định dạng 64 bit trứớc khi vẽ
         self.rotateCount += 1
-        pygame.draw.rect(win, (255,0,0),self.hitbox, 1)
+        # pygame.draw.rect(win, (255,0,0),self.hitbox, 2)
 
      #tương tác  hitbox 
     def collide(self, rect):
@@ -111,7 +111,7 @@ class spike(saw):#kế thừa luôn từ lớp saw(cưa) vì 2 cái giống nhau
 
     def draw(self, win):
         self.hitbox = (self.x + 10, self.y, 28,315)
-        pygame.draw.rect(win, (255,0,0), self.hitbox, 2)
+        # pygame.draw.rect(win, (255,0,0), self.hitbox, 2)
         win.blit(self.img, (self.x, self.y))
         
        
@@ -212,22 +212,25 @@ fallSpeed = 0
 while run:
     if pause > 0:#nếu player bị ngã thì pause sẽ +1
         pause += 1
-        if pause > fallSpeed * 2:#kiểm tra pause, pause sẽ gọi đến endscreen khi đạt tơi 1 han nhất định
+        if pause > fallSpeed * 2:#kiểm tra pause>fallSpeend x2 thì gọi tới end screen()( đến giây t2 thì endscreen hiên lên)
             endScreen()
+#nhiệm vụ của if là check time để hiển thị endscreen 
+    score = speed//10 - 6 #tính điểm
 
-    score = speed//10 - 6
-
-    for obstacle in obstacles: #vòng lặp để khi thua hoặc khi chướng ngại ra khỏi khung hình sẽ dc lọai bỏ
-        if obstacle.collide(runner.hitbox):
+    for obstacle in obstacles: 
+        if obstacle.collide(runner.hitbox):#nếu hibox runner va chạm vs chướng ngại thì runner ngã
             runner.falling = True
+            # pygame.time.delay(1000)
 
-            if pause == 0:
-                pause = 1
-                fallSpeed = speed
-        if obstacle.x < -64:
+            if pause == 0:  #kiểm tra runner đã chạn vào obj chưa
+                pause = 1 #pause dc gán =1s
+                fallSpeed = speed #speed sẽ ko dc tăng lên nữa
+
+
+        if obstacle.x < -64: #kiểm tra nếu obj(obstacle) ra khỏi khung hình thì loại bỏ(64px)
             obstacles.pop(obstacles.index(obstacle))
         else:
-            obstacle.x -= 1.4
+            obstacle.x -= 1.4#dịch chuyển sang tráii nên -1.4
 
     bgX -= 1.4  #dịch chuyển cả 2 background tạo hieuj ứng di chuyển
     bgX2 -= 1.4
