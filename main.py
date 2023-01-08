@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 import os
 import random
-
+# tạo không gian làm việc mới
 pygame.init()
 
 W, H = 950, 500
@@ -17,6 +17,7 @@ bgX2 = bg.get_width()
 clock = pygame.time.Clock()
 
 class player(object):
+
     run = [pygame.image.load(os.path.join('images', str(x) + '.png')) for x in range(8, 16)]#load img cho obj
     jump = [pygame.image.load(os.path.join('images', str(x) + '.png')) for x in range(1, 8)]#load img cho obj
     slide = [pygame.image.load(os.path.join('images', 'S1.png')), pygame.image.load(os.path.join('images', 'S2.png')), pygame.image.load(os.path.join('images', 'S2.png')), pygame.image.load(os.path.join('images', 'S2.png')), pygame.image.load(os.path.join('images', 'S2.png')),pygame.image.load(os.path.join('images', 'S2.png')), pygame.image.load(os.path.join('images', 'S2.png')), pygame.image.load(os.path.join('images', 'S2.png')), pygame.image.load(os.path.join('images', 'S3.png')), pygame.image.load(os.path.join('images', 'S4.png')), pygame.image.load(os.path.join('images', 'S5.png'))]#load img cho obj
@@ -28,20 +29,21 @@ class player(object):
         self.y = y#tọa độ xuất hiện của obj
         self.width = width #chiều rộng của obj
         self.height = height #chiều cao của obj
-        self.jumping = False 
-        self.sliding = False
-        self.falling = False
-        self.slideCount = 0
+        #khỏi tạo hàn ban đầu
+        self.jumping = False #jump :nhảy
+        self.sliding = False  #slide:trượt
+        self.falling = False  #ngã
+        self.slideCount = 0  
         self.jumpCount = 0
         self.runCount = 0
         self.slideUp = False
-
+#làm hiệu ưng  hành động
     def draw(self, win):
         if self.falling:
-            win.blit(self.fall, (self.x, self.y + 30))
+            win.blit(self.fall, (self.x, self.y + 40))
         elif self.jumping:
-            self.y -= self.jumpList[self.jumpCount] * 1.1
-            win.blit(self.jump[self.jumpCount//24], (self.x, self.y))
+            self.y -= self.jumpList[self.jumpCount] * 1.5
+            win.blit(self.jump[self.jumpCount//18], (self.x, self.y))
             self.jumpCount += 1
             if self.jumpCount > 108:
                 self.jumpCount = 0
@@ -58,7 +60,6 @@ class player(object):
                 self.slideUp = True
             elif self.slideCount > 20 and self.slideCount < 80:
                 self.hitbox = (self.x, self.y+3, self.width-8, self.height-35)
-
             if self.slideCount >= 110:
                 self.slideCount = 0
                 self.runCount = 0
@@ -66,7 +67,6 @@ class player(object):
                 self.hitbox = (self.x+ 4, self.y, self.width-24, self.height-10)
             win.blit(self.slide[self.slideCount//10], (self.x, self.y))
             self.slideCount += 1
-
         else:
             if self.runCount > 42:
                 self.runCount = 0
@@ -88,7 +88,7 @@ class saw(object):
         self.vel = 1.4
 
     def draw(self, win):
-        self.hitbox = (self.x + 10, self.y + 5, self.width - 20, self.height - 5) #xác định hitbox cho obj
+        self.hitbox = (self.x + 10, self.y + 15, self.width - 20, self.height - 5) #xác định hitbox cho obj
         # pygame.draw.rect(win, (255,0,0), self.hitbox, 2)
         if self.rotateCount >= 8:  #hỗ trợ cho phép tạo hiệu ứng cho cưa
             self.rotateCount = 0
@@ -143,7 +143,7 @@ def endScreen():
     global pause, score, speed, obstacles
     #nhưng biến này cần reset lại 
     pause = 0
-    speed = 30
+    speed = 60
     obstacles = []
 #đây là vong lặp khác (vong lạp của game sau khi dc chơi lại)
     run = True
@@ -192,10 +192,11 @@ def redrawWindow():
 
 pygame.time.set_timer(USEREVENT+1, 500)# Đặt hẹn giờ trong 0,5s userevent có 1 sự kiên người dùng dc kích hoạt
 pygame.time.set_timer(USEREVENT+2, 3000)# Đặt hẹn giờ trong 0,03s userevent có 1 sự kiên dc kích hoạt
+
+
+
 speed = 60
-
 score = 0
-
 run = True
 runner = player(200, 313, 64, 64)
 # Điều này sẽ vượt lên trên vòng lặp trò chơi của chúng ta
