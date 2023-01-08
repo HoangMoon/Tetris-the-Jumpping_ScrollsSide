@@ -17,18 +17,18 @@ bgX2 = bg.get_width()
 clock = pygame.time.Clock()
 
 class player(object):
-    run = [pygame.image.load(os.path.join('images', str(x) + '.png')) for x in range(8, 16)]
-    jump = [pygame.image.load(os.path.join('images', str(x) + '.png')) for x in range(1, 8)]
-    slide = [pygame.image.load(os.path.join('images', 'S1.png')), pygame.image.load(os.path.join('images', 'S2.png')), pygame.image.load(os.path.join('images', 'S2.png')), pygame.image.load(os.path.join('images', 'S2.png')), pygame.image.load(os.path.join('images', 'S2.png')),pygame.image.load(os.path.join('images', 'S2.png')), pygame.image.load(os.path.join('images', 'S2.png')), pygame.image.load(os.path.join('images', 'S2.png')), pygame.image.load(os.path.join('images', 'S3.png')), pygame.image.load(os.path.join('images', 'S4.png')), pygame.image.load(os.path.join('images', 'S5.png'))]
+    run = [pygame.image.load(os.path.join('images', str(x) + '.png')) for x in range(8, 16)]#load img cho obj
+    jump = [pygame.image.load(os.path.join('images', str(x) + '.png')) for x in range(1, 8)]#load img cho obj
+    slide = [pygame.image.load(os.path.join('images', 'S1.png')), pygame.image.load(os.path.join('images', 'S2.png')), pygame.image.load(os.path.join('images', 'S2.png')), pygame.image.load(os.path.join('images', 'S2.png')), pygame.image.load(os.path.join('images', 'S2.png')),pygame.image.load(os.path.join('images', 'S2.png')), pygame.image.load(os.path.join('images', 'S2.png')), pygame.image.load(os.path.join('images', 'S2.png')), pygame.image.load(os.path.join('images', 'S3.png')), pygame.image.load(os.path.join('images', 'S4.png')), pygame.image.load(os.path.join('images', 'S5.png'))]#load img cho obj
     fall = pygame.image.load(os.path.join('images', '0.png'))
-    jumpList = [1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-1,-1,-1,-1,-1,-1,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4]
+    jumpList = [1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-1,-1,-1,-1,-1,-1,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4]#chuyển động khi nhảy
 
     def __init__(self, x, y, width, height):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.jumping = False
+        self.x = x  #tọa độ xuất hiện của obj
+        self.y = y#tọa độ xuất hiện của obj
+        self.width = width #chiều rộng của obj
+        self.height = height #chiều cao của obj
+        self.jumping = False 
         self.sliding = False
         self.falling = False
         self.slideCount = 0
@@ -40,8 +40,8 @@ class player(object):
         if self.falling:
             win.blit(self.fall, (self.x, self.y + 30))
         elif self.jumping:
-            self.y -= self.jumpList[self.jumpCount] * 1.3
-            win.blit(self.jump[self.jumpCount//18], (self.x, self.y))
+            self.y -= self.jumpList[self.jumpCount] * 1.1
+            win.blit(self.jump[self.jumpCount//24], (self.x, self.y))
             self.jumpCount += 1
             if self.jumpCount > 108:
                 self.jumpCount = 0
@@ -74,7 +74,7 @@ class player(object):
             self.runCount += 1
             self.hitbox = (self.x+ 4, self.y, self.width-24, self.height-13)
 
-        #pygame.draw.rect(win, (255,0,0),self.hitbox, 2)
+        pygame.draw.rect(win, (255,0,0),self.hitbox, 2)
 
 class saw(object):
     rotate = [pygame.image.load(os.path.join('images', 'SAW0.png')), pygame.image.load(os.path.join('images', 'SAW1.png')), pygame.image.load(os.path.join('images', 'SAW2.png')), pygame.image.load(os.path.join('images', 'SAW3.png'))]
@@ -88,28 +88,33 @@ class saw(object):
         self.vel = 1.4
 
     def draw(self, win):
-        self.hitbox = (self.x + 10, self.y + 5, self.width - 20, self.height - 5)
+        self.hitbox = (self.x + 10, self.y + 5, self.width - 20, self.height - 5) #xác định hitbox cho obj
         # pygame.draw.rect(win, (255,0,0), self.hitbox, 2)
-        if self.rotateCount >= 8:
+        if self.rotateCount >= 8:  #hỗ trợ cho phép tạo hiệu ứng cho cưa
             self.rotateCount = 0
-        win.blit(pygame.transform.scale(self.rotate[self.rotateCount//2], (64,64)), (self.x,self.y))
+        win.blit(pygame.transform.scale(self.rotate[self.rotateCount//2], (64,64)), (self.x,self.y)) #co hình ảnh về định dạng 64 bit trứớc khi vẽ
         self.rotateCount += 1
+        pygame.draw.rect(win, (255,0,0),self.hitbox, 1)
 
+     #tương tác  hitbox 
     def collide(self, rect):
-        if rect[0] + rect[2] > self.hitbox[0] and rect[0] < self.hitbox[0] + self.hitbox[2]:
-            if rect[1] + rect[3] > self.hitbox[1]:
-                return True
+        #kiểm tra vị trí hitbox theo X
+        if rect[0] + rect[2] > self.hitbox[0] and rect[0] < self.hitbox[0] + self.hitbox[2]:#vị trí (x) + chiều rộng
+            #kiểm tra vị trí hitbox theo y
+            if rect[1] + rect[3] > self.hitbox[1]:#vị trí +chiều cao
+                return True #trả về nếu tọa độ x player ở trên cưa
         return False
 
 
-class spike(saw):
+class spike(saw):#kế thừa luôn từ lớp saw(cưa) vì 2 cái giống nhau
     img = pygame.image.load(os.path.join('images', 'spike.png'))
 
     def draw(self, win):
         self.hitbox = (self.x + 10, self.y, 28,315)
-        # pygame.draw.rect(win, (255,0,0), self.hitbox, 2)
+        pygame.draw.rect(win, (255,0,0), self.hitbox, 2)
         win.blit(self.img, (self.x, self.y))
-
+        
+       
     def collide(self, rect):
         if rect[0] + rect[2] > self.hitbox[0] and rect[0] < self.hitbox[0] + self.hitbox[2]:
             if rect[1] < self.hitbox[3]:
@@ -118,15 +123,15 @@ class spike(saw):
 
 # updateFile điểm
 def updateFile():
-    f = open('scores.txt','r')
-    file = f.readlines()
-    last = int(file[0])
+    f = open('scores.txt','r')# mở file ở chế độ đọc 
+    file = f.readlines() # đọc tất cả các dòng trong danh sách 
+    last = int(file[0])# lấy dòng đầu tiên của file
 
-    if last < int(score):
-        f.close()
-        file = open('scores.txt', 'w')
-        file.write(str(score))
-        file.close()
+    if last < int(score):# xem điểm hiện tại có lớn hơn điểm tốt nhất trước đó không 
+        f.close()# đóng/lưu file
+        file = open('scores.txt', 'w')# mở lại nó trong
+        file.write(str(score))# ghi 
+        file.close()# đóng/lưu file 
 
         return score
 
@@ -136,20 +141,21 @@ def updateFile():
 
 def endScreen():
     global pause, score, speed, obstacles
+    #nhưng biến này cần reset lại 
     pause = 0
     speed = 30
     obstacles = []
-
+#đây là vong lặp khác (vong lạp của game sau khi dc chơi lại)
     run = True
     while run:
         pygame.time.delay(100)
-        for event in pygame.event.get():
+        for event in pygame.event.get():#tạo vòng lặp cho game để làm mới
             # quit game
-            if event.type == pygame.QUIT:
-                run = False
-                pygame.quit()
+            if event.type == pygame.QUIT:#kiểm tra nếu user nhấn tắt (dấu X đỏ)
+                run = False #kết thucvs vòng lặp
+                pygame.quit()#thoát hẳn game
             # dừng mọi action của game
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:#kiểm tra khi nhấn chuột
                 run = False
                 runner.falling = False
                 runner.sliding = False
@@ -159,6 +165,8 @@ def endScreen():
         # hiển thị endScreen
         largeFont = pygame.font.SysFont('comicsans', 80)
         lastScore = largeFont.render('Best Score: ' + str(updateFile()),1,(255,255,255))
+        # hiển thị điểm và update điểm cao mới  vào file
+
         currentScore = largeFont.render('Score: '+ str(score),1,(255,255,255))
         win.blit(lastScore, (W/2 - lastScore.get_width()/2,150))
         win.blit(currentScore, (W/2 - currentScore.get_width()/2, 240))
@@ -167,39 +175,48 @@ def endScreen():
 
 def redrawWindow():
     largeFont = pygame.font.SysFont('comicsans', 30)
-    win.blit(bg, (bgX, 0))
-    win.blit(bg, (bgX2,0))
+    win.blit(bg, (bgX, 0))#vẽ bg 1
+    win.blit(bg, (bgX2,0))#vẽ bg 2
     text = largeFont.render('Score: ' + str(score), 1, (255,255,255))
-    runner.draw(win)
-    for obstacle in obstacles:
+    
+    
+    
+    runner.draw(win)#vẽ runner
+
+    for obstacle in obstacles: #vòng lặt hiển thị các chướng ngại
         obstacle.draw(win)
 
     win.blit(text, (700, 10))
-    pygame.display.update()
+    pygame.display.update() #update screen
 
 
-pygame.time.set_timer(USEREVENT+1, 500)
-pygame.time.set_timer(USEREVENT+2, 3000)
+pygame.time.set_timer(USEREVENT+1, 500)# Đặt hẹn giờ trong 0,5s userevent có 1 sự kiên người dùng dc kích hoạt
+pygame.time.set_timer(USEREVENT+2, 3000)# Đặt hẹn giờ trong 0,03s userevent có 1 sự kiên dc kích hoạt
 speed = 60
 
 score = 0
 
 run = True
 runner = player(200, 313, 64, 64)
+# Điều này sẽ vượt lên trên vòng lặp trò chơi của chúng ta
 
-obstacles = []
+
+
+obstacles = [] #tạo mangr chướng ngại vật ngại vật
+# lưu trữ tất cả các đối tượng của mình trong một danh sách và lặp qua danh sách để vẽ từng đối tượng.
+
 pause = 0
 fallSpeed = 0
 
 while run:
-    if pause > 0:
+    if pause > 0:#nếu player bị ngã thì pause sẽ +1
         pause += 1
-        if pause > fallSpeed * 2:
+        if pause > fallSpeed * 2:#kiểm tra pause, pause sẽ gọi đến endscreen khi đạt tơi 1 han nhất định
             endScreen()
 
-    score = speed//10 - 3
+    score = speed//10 - 6
 
-    for obstacle in obstacles:
+    for obstacle in obstacles: #vòng lặp để khi thua hoặc khi chướng ngại ra khỏi khung hình sẽ dc lọai bỏ
         if obstacle.collide(runner.hitbox):
             runner.falling = True
 
@@ -211,10 +228,10 @@ while run:
         else:
             obstacle.x -= 1.4
 
-    bgX -= 1.4
+    bgX -= 1.4  #dịch chuyển cả 2 background tạo hieuj ứng di chuyển
     bgX2 -= 1.4
 
-    if bgX < bg.get_width() * -1:
+    if bgX < bg.get_width() * -1: #nếu background đã đi qua (-width ) thì reset về vị trí
         bgX = bg.get_width()
     if bgX2 < bg.get_width() * -1:
         bgX2 = bg.get_width()
@@ -224,10 +241,10 @@ while run:
             pygame.quit()
             run = False
 
-        if event.type == USEREVENT+1:
-            speed += 1
+        if event.type == USEREVENT+1: # Kiểm tra xem bộ đếm thời gian có tắt không 
+            speed += 1 #tăng tốc bg
 
-        if event.type == USEREVENT+2:
+        if event.type == USEREVENT+2: #random hien thị chướng ngại
             r = random.randrange(0,2)
             if r == 0:
                 obstacles.append(saw(810, 310, 64, 64))
@@ -237,11 +254,11 @@ while run:
     if runner.falling == False:
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_SPACE] or keys[pygame.K_UP]:
-            if not(runner.jumping):
+        if keys[pygame.K_SPACE] or keys[pygame.K_UP]:# kiểm tra nhảy 
+            if not(runner.jumping): 
                 runner.jumping = True
 
-        if keys[pygame.K_DOWN]:
+        if keys[pygame.K_DOWN]:# kiểm tra  trượt nếu ko trượt thì trươtj
             if not(runner.sliding):
                 runner.sliding = True
 
