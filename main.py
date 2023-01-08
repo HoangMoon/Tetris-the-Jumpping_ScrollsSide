@@ -5,7 +5,7 @@ import random
 # tạo không gian làm việc mới
 pygame.init()
 
-W, H = 950, 500
+W, H = 900, 450
 win = pygame.display.set_mode((W,H))
 pygame.display.set_caption('Tetris the Jumpping')
 
@@ -165,11 +165,14 @@ def endScreen():
         # hiển thị endScreen
         largeFont = pygame.font.SysFont('comicsans', 80)
         lastScore = largeFont.render('Best Score: ' + str(updateFile()),1,(255,255,255))
+        RestartText = largeFont.render('Click to restart!',1,(255,255,255))
         # hiển thị điểm và update điểm cao mới  vào file
 
         currentScore = largeFont.render('Score: '+ str(score),1,(255,255,255))
+        win.blit
         win.blit(lastScore, (W/2 - lastScore.get_width()/2,150))
         win.blit(currentScore, (W/2 - currentScore.get_width()/2, 240))
+        win.blit(RestartText,(W/2 - lastScore.get_width()/2, 340))
         pygame.display.update()
     score = 0
 
@@ -191,7 +194,7 @@ def redrawWindow():
 
 
 pygame.time.set_timer(USEREVENT+1, 500)# Đặt hẹn giờ trong 0,5s userevent có 1 sự kiên người dùng dc kích hoạt
-pygame.time.set_timer(USEREVENT+2, 3000)# Đặt hẹn giờ trong 0,03s userevent có 1 sự kiên dc kích hoạt
+pygame.time.set_timer(USEREVENT+2, random.randrange(2000,3500))# Đặt hẹn giờ trong khoảng 2000-3500 có 1 sự kiên dc kích hoạt
 
 
 
